@@ -1,0 +1,27 @@
+{
+  "name": "projeto-final",
+  "version": "1.0.0",
+  "description": "Projeto de PADB, redes e WEb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatheusVSF/Projeto-FInal.git"
+  },
+  "keywords": [
+    "2202"
+  ],
+  "author": "Matheus",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MatheusVSF/Projeto-FInal/issues"
+  },
+  "homepage": "https://github.com/MatheusVSF/Projeto-FInal#readme",
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "pg": "^8.16.3"
+  }
+}
