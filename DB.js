@@ -20,14 +20,14 @@ class DB_User {
 }
 
 ;(async () => {
-    //const user_master = new DB_User_Master() 
+    const user_master = new DB_User() 
     //user_master.cadastrar_user(["12345678910", "matheusvitoriosfreitas@gmail.com", "22022008mV@", "Matheus", "mago", 0, 1, 0, true])
     //console.log(await user_master.listar_user())
     //await user_master.update_user("xp", 5, "12345678910")
     //await user_master.update_user("ativo", "true", "12345678910")
     //console.log(await user_master.listar_user())
     //await user_master.deletar_user("12345678910")
-    //console.log(user_master.listar_user())
+    console.log(user_master.listar_user())
 })();
 
 module.exports = {DB_User,}
