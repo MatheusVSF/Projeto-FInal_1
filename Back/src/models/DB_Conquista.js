@@ -1,8 +1,9 @@
 const {query} = require("../db/conDB")
 const {DB_User} = require("./DB_User")
+const {C_User} = require("../controllers/SC_User")
 
-
-const user = new DB_User()
+const user_DB = new DB_User()
+const user_C = new C_User()
 
 class Conquista { 
     async criar_Conquista(valores) {
@@ -10,7 +11,6 @@ class Conquista {
     }
 
     async Concluir() {
-        let xp = user.xp
-        const res = await query("")
+        await query("UPADATE Conquista SET concluido = true WHERE concluido = false")
     }
 }

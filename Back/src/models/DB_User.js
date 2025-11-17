@@ -18,8 +18,15 @@ class DB_User {
     async deletar_user(id) {
         await query(`UPDATE Usuario SET ativo = false WHERE id = $1`, [id])
     }
+
+    async verificar_loguin(id) {
+        let res = await query(`SELECT * FROM Usuario WHERE id = $1`, [id])
+        return res.rows
+    }
 }
 module.exports = {DB_User,}
-const user = new DB_User()
 //user.cadastrar_user("22020202020", "mvsf123@gmail.com", "2202@G", "Kururu", "Mago", 0, 1, 0, true)
-console.log(user.nome)
+;(async () => {
+    //const user = new DB_User()
+    //console.log(await user.listar_user())
+})();
