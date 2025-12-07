@@ -1,0 +1,7 @@
+Protocolos a serem seguidos: 
+Login: 
+    cadastrar: O usuario põe todos os dados permitidos e em seguida, se passar pelos verificadores, será redirecionado para a tela inicial
+    login: O usuario põe o email e senha, terá uma função que analisa se ele realmente existe, caso sim, será redirecionado para a tela inicial
+
+Primeira conquista: 
+    Ao logar pela primeira vez, na tela inicial, aparecerá um menu de criação de conquista, lá ele poderá criar uma conquista inicial
