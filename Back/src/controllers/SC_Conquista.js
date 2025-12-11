@@ -16,15 +16,12 @@ class Conquista{
         this.concluido = false
 
         this.db = new DB_Conquista()
-        this.user = null
     }
 
     async criar(req, res) {
         try {
-            this.user = new C_User()
             this.__id = funcoes.gerar_Id()
-            this.__id_User = this.user.get_id()
-
+            this.__id_User = C_User.get_id()
             const data = req.body
             const {titlo, descricao, meta} = data
             this.titlo = titlo

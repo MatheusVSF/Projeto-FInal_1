@@ -39,7 +39,7 @@ class C_User {
         }
     }
 
-    get_id() {
+    static get_id() {
         return this.__id
     }
     
