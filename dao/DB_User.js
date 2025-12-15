@@ -1,9 +1,8 @@
-const {query} = require("../db/conDB");
+const {query} = require("./conecao");
 
 class DB_User {
     async cadastrar_user(id, email, senha, nome, classe, xp, nivel, moedas, ativo) {
-        let valores = [id, email, senha, nome, classe, xp, nivel, moedas, ativo]
-        await query("INSERT INTO Usuario (id, email, senha, nome, classe, xp, nivel, moedas, ativo)  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", valores)
+        await query("INSERT INTO Usuario (id, email, senha, nome, classe, xp, nivel, moedas, ativo)  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)", [id, email, senha, nome, classe, xp, nivel, moedas, ativo])
     }
 
     async listar_user() {
@@ -23,10 +22,10 @@ class DB_User {
         let res = await query(`SELECT * FROM Usuario WHERE id = $1`, [id])
         return res.rows
     }
+
+    async buscarEmail(email) {
+        let res = await query(`SELECT * FROM Usuario WHERE email = $1`, [email])
+        return res.rows[0]
+    }
 }
 module.exports = {DB_User,}
-//user.cadastrar_user("22020202020", "mvsf123@gmail.com", "2202@G", "Kururu", "Mago", 0, 1, 0, true)
-;(async () => {
-    //const user = new DB_User()
-    //console.log(await user.listar_user())
-})();

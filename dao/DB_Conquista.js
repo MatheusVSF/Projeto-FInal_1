@@ -1,4 +1,4 @@
-const {query} = require("../db/conDB")
+const {query} = require("./conecao")
 /*
 const {DB_User} = require("./DB_User")
 const {C_User} = require("../controllers/SC_User")
@@ -11,8 +11,12 @@ class DB_Conquista {
         await query("INSERT INTO Conquista (id, id_user, titlo, descricao, meta, progresso, concluido)  VALUES ($1, $2, $3, $4, $5, $6, $7)", valores)
     }
 
-    async Concluir() {
-        await query("UPADATE Conquista SET concluido = true WHERE concluido = false")
+    async progredir(id, valor) {
+        await query("UPDATE Conquista SET progresso = progresso + $1 WHERE id = $2", [valor, id])
+    }
+
+    async Concluir(id) {
+        await query("UPADATE Conquista SET concluido = true WHERE concluido = false AND id = $1", [id])
     }
 }
 

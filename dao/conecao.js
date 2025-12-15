@@ -1,4 +1,4 @@
-require("dotenv").config({ path: require("path").resolve(__dirname, "../../.env") })
+require("dotenv").config()
 
 const {Pool} = require("pg")
 
@@ -15,8 +15,12 @@ async function query(sql_comand, params) {
         const res = await pool.query(sql_comand, params)
         return res
    } catch (err) {
-        return err
+        console.error("ERRO NO BANCO:", err)
+        throw err
    }
 }
 
 module.exports = {query}
+//console.log("PGUSER:", process.env.PGUSER, typeof process.env.PGUSER)
+//console.log("PGPASSWORD:", process.env.PGPASSWORD, typeof process.env.PGPASSWORD)
+//console.log("PGDATABASE:", process.env.PGDATABASE)
