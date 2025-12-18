@@ -18,6 +18,11 @@ class DB_Conquista {
     async Concluir(id) {
         await query("UPADATE Conquista SET concluido = true WHERE concluido = false AND id = $1", [id])
     }
+
+    async Retronar_Conquistas(id) {
+        const res = await query("SELECT * FROM Conquista WHERE id_user = $1", [id])
+        return res.rows
+    }
 }
 
 module.exports = {DB_Conquista, }

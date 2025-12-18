@@ -54,6 +54,16 @@ class C_Conquista {
             res.status(500).json({erro: err.message})
         }
     }
+
+    async retornar(req, res) {
+        try {
+            const id = req.session.user.id
+            const resposta = await this.db.Retronar_Conquistas(id)
+            res.json({"conquistas": resposta})
+        } catch(err) {
+            res.status(400).json({erro: err.message})
+        }
+    }
 }
 
 module.exports = {C_Conquista, }

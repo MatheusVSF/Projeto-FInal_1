@@ -52,7 +52,8 @@ class C_User {
 
     async listar(req, res) {
         const resposta = await this.db.listar_user()
-        res.send(resposta)
+        //res.send(resposta.map(u => u.id))
+        res.json(resposta)
     }
 
     async update_perfil(req, res) {

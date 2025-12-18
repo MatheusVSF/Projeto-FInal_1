@@ -1,5 +1,6 @@
 const express = require("express")
 const session = require("express-session")
+const cors = require("cors")
 
 const app = express()
 app.use(express.json())
@@ -19,5 +20,8 @@ const conq_R = require("./routes/R_Conquistas")
 
 app.use("/user", user_R.rota)
 app.use("/conq", conq_R.rota)
+
+app.use(express.urlencoded({extended: true}))
+app.use(cors())
 
 app.listen(3000)
