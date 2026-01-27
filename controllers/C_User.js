@@ -13,10 +13,10 @@ class C_User {
             const id = funcoes.gerar_Id()
             const {email, senha, nome, classe} = req.body
             
-            if (services.validarCadastro({email, senha})) {
-                const user = new User({id, email, senha, nome, classe})
+            if (services.validar_Cadastro({email, senha})) {
+                const user = new User(id, email, senha, nome, classe)
 
-                await this.db.cadastrar_user(user.id, user.email, user.senha, user.nome, user.classe, user.xp, user.nivel, user.moedas, user.ativo)
+                await this.db.cadastrar_user(user.id, user.email, user.senha, user.nome, user.classe, user.xp, user.nivel, user.moedas, user.conquistas, user.ativo)
 
                 res.status(201).json({msg: "User cadastrado"})
             } else {
@@ -27,52 +27,77 @@ class C_User {
             res.status(500).json({erro: err.message})
         }
     }
-
+    
     async login(req, res) {
-        const {email, senha} = req.body
-
-        const user = await this.db.buscarEmail(email)
-        
-        if (!user || user.senha !== senha) {
-            return res.status(401).json({erro: "Login inválido"})
+        try {
+            const {email, senha} = req.body
+            const user = await this.db.login(email, senha)
+            if (user.length === 0) {
+                return res.status(401).json({erro: "Login inválido"})
+            }
+            req.session.user = {
+                id: user[0].id,
+                nome: user[0].nome,
+                email: user[0].email,
+                classe: user[0].classe,
+                xp: user[0].xp,
+                nivel: user[0].nivel,
+                moedas: user[0].moedas,
+                conquistas: user[0].conquistas,
+                ativo: user[0].ativo
+            }
+            
+            
+            res.status(200).json({msg: "positivo"})
+           
+        } catch(err) {
+            res.status(500).json({erro: err.message})
         }
-
-        req.session.user = {
-            id: user.id, 
-            nome: user.nome, 
-            email: user.email,
-            classe: user.classe,
-            xp: user.xp, 
-            nivel: user.nivel, 
-            moedas: user.moedas
-        }
-
-        res.json({ msg: "Logado com sucesso" })
     }
 
-    async listar(req, res) {
-        const resposta = await this.db.listar_user()
-        //res.send(resposta.map(u => u.id))
-        res.json(resposta)
+    async get_user(req, res) {
+        try  {
+            const user = await this.db.get_user(req.session.user.id)
+            res.status(200).json(user[0])
+        } catch(err) {
+            res.status(500).json({erro: err.message})
+        }
     }
-
     async update_perfil(req, res) {
-        const {coluna, valor} = req.body
-        const id = req.session.user.id
-        if (services.colunasEditaveis(coluna)) {
-            await this.db.update_user(coluna, valor, id)
-            res.json({msg: "Atualizado"})
-        } else {
-            res.json({msg: "Atualização não possivel"})
+        try {
+            const {coluna, valor} = req.body
+            const id = req.session.user.id
+            if (services.colunasEditaveis(coluna)) {
+                await this.db.update_user(coluna, valor, id)
+                res.json({msg: "Atualizado"})
+            } else {
+                res.json({msg: "Atualização não possivel"})
+            }
+        } catch (err) {
+            res.status(500).json({erro: err.message})
         }
-
-        
+    }
+    
+    async deletar(req, res) {
+        try {
+            const {id} = req.session.user.id
+            const senha = req.body
+            await this.db.deletar_user(id, senha)
+            res.send("Deletado")
+        } catch (err) {
+            res.status(500).json({erro: err.message})
+        }
     }
 
-    async deletar(req, res) {
-        const {id} = req.body
-        await this.db.deletar_user(id)
-        res.send("Deletado")
+
+    //ADM 
+    async listar(req, res) {
+        try  {
+            const user = await this.db.listar_users()
+            res.status(200).json(user)
+        } catch (err) {
+            res.status(500).json({erro: err.message})
+        }
     }
 }
 

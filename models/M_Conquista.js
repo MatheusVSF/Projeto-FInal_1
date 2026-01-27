@@ -1,11 +1,10 @@
 class Conquista {
-    constructor({id, id_user, titlo, descricao, meta}) {
+    constructor(id, id_user, titlo, descricao, preco) {
         this.id = id
         this.id_user = id_user
         this.titlo = titlo
         this.descricao = descricao
-        this.meta = meta
-        this.progresso = 0
+        this.preco = preco
         this.concluido = false
     }
 }
