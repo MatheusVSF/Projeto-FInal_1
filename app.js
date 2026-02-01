@@ -13,9 +13,9 @@ app.use(cors({
     origin: "http://127.0.0.1:5500",
     credentials: true
 }))
-//Ativando o json
+
 app.use(express.json())
-//Ativando as sessões
+
 app.use(session({
     secret: "chave",
     resave: false,
@@ -26,10 +26,10 @@ app.use(session({
     }
 }))
 
-//Usando as rotas
+
 app.use("/user", R_User.rota)
 app.use("/tarefa", R_Tarefa.rota)
 app.use("/conquista", R_Conquista.rota)
 app.use("/tag", R_Tag.rota)
-//Ativando o servidor 
+
 app.listen(3000)

@@ -1,11 +1,96 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Quest RPG - Login</title>
+    <link rel="stylesheet" href="styles/index.css">
 </head>
+
 <body>
-    
+    <div class="container">
+        <div class="left-side">
+            <h1>⚔️ Quest RPG</h1>
+            <p>Transforme suas tarefas em aventuras épicas!</p>
+            <div class="features">
+                <div class="feature">
+                    <span class="icon">📋</span>
+                    <p>Gerencie suas tarefas</p>
+                </div>
+                <div class="feature">
+                    <span class="icon">⭐</span>
+                    <p>Ganhe XP e suba de nível</p>
+                </div>
+                <div class="feature">
+                    <span class="icon">🏆</span>
+                    <p>Desbloqueie conquistas</p>
+                </div>
+                <div class="feature">
+                    <span class="icon">💰</span>
+                    <p>Acumule moedas</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-side">
+            <div class="form-container">
+                <div id="login-form" class="form active">
+                    <h2>Entrar</h2>
+                    <form id="loginForm">
+                        <div class="input-group">
+                            <label for="login-email">Email</label>
+                            <input type="email" id="login-email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="login-senha">Senha</label>
+                            <input type="password" id="login-senha" required>
+                        </div>
+                        <button type="submit" class="btn-primary">Entrar</button>
+                        <p class="toggle-text">
+                            Não tem uma conta?
+                            <span class="toggle-link" onclick="toggleForms()">Cadastre-se</span>
+                        </p>
+                    </form>
+                </div>
+                <div id="cadastro-form" class="form">
+                    <h2>Cadastrar</h2>
+                    <form id="cadastroForm">
+                        <div class="input-group">
+                            <label for="cadastro-nome">Nome</label>
+                            <input type="text" id="cadastro-nome" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="cadastro-email">Email</label>
+                            <input type="email" id="cadastro-email" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="cadastro-senha">Senha (mínimo 6 caracteres)</label>
+                            <input type="password" id="cadastro-senha" required minlength="6">
+                        </div>
+                        <div class="input-group">
+                            <label for="cadastro-classe">Classe</label>
+                            <select id="cadastro-classe" required>
+                                <option value="">Escolha sua classe</option>
+                                <option value="Guerreiro">⚔️ Guerreiro</option>
+                                <option value="Mago">🔮 Mago</option>
+                                <option value="Arqueiro">🏹 Arqueiro</option>
+                                <option value="Ladino">🗡️ Ladino</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn-primary">Cadastrar</button>
+                        <p class="toggle-text">
+                            Já tem uma conta?
+                            <span class="toggle-link" onclick="toggleForms()">Entrar</span>
+                        </p>
+                    </form>
+                </div>
+                <div id="message" class="message"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/index.js"></script>
 </body>
+
 </html>
