@@ -84,7 +84,8 @@ class C_Conquista {
 
     async listar_loja(req, res) {
         try {
-            const itens = await this.db.carregar_loja()
+            const id_user = req.session.user.id
+            const itens = await this.db.carregar_loja(id_user)
             res.status(200).json(itens)
         } catch (err) {
             res.status(500).json({ erro: err.message })

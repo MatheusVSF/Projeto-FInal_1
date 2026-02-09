@@ -10,7 +10,7 @@ const cors = require("cors")
 const app = express()
 
 app.use(cors({
-    origin: ["http://127.0.0.1:5500", "http://127.0.0.1:5501", "http://127.0.0.1:5502", "http://127.0.0.1:5503", "http://127.0.0.1:5504", "http://127.0.0.1:5505"],
+    origin: ["http://127.0.0.1:5500", "http://127.0.0.1:5501", "http://127.0.0.1:5502", "http://127.0.0.1:5503", "http://127.0.0.1:5504", "http://127.0.0.1:5505", "http://127.0.0.1:5506"],
     credentials: true
 }))
 
@@ -19,7 +19,6 @@ app.use(express.json())
 app.use(session({
     secret: "chave",
     resave: false,
-    saveUninitialized: true,
     cookie: {
         httpOnly: true,
         maxAge: 60 * 60 * 1000 //1 hora

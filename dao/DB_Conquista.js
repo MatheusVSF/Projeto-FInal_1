@@ -30,8 +30,13 @@ class DB_Conquista {
     }
 
     // --- LOJA ---
-    async carregar_loja() {
-        const res = await query("SELECT * FROM Conquista WHERE id_user = 'LOJA'")
+    async carregar_loja(id_user) {
+        // Seleciona itens da loja que o usuário AINDA NÃO TEM (baseado no título)
+        const res = await query(`
+            SELECT * FROM Conquista 
+            WHERE id_user = 'LOJA' 
+            AND titlo NOT IN (SELECT titlo FROM Conquista WHERE id_user = $1)
+        `, [id_user])
         return res.rows
     }
 

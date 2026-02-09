@@ -45,17 +45,22 @@ class DB_User {
     }
 
     async deletar_user_adm(id) {
-        await query("UPDATE Usuario SET ativo = false WHERE id = $1", [id])
+        // Primeiro deleta os dados relacionados para evitar erro de Foreign Key
+        await query(`DELETE FROM Tarefa WHERE user_id = $1`, [id])
+        await query(`DELETE FROM Conquista WHERE id_user = $1`, [id])
+        await query(`DELETE FROM Tag WHERE id_user = $1`, [id])
+
+        // Depois deleta o usuário
+        await query(`DELETE FROM Usuario WHERE id = $1`, [id])
     }
 
     async adicionar_recompensa(id, xp, moedas) {
-        const res = await query("UPDATE Usuario SET xp = xp + $1, moedas = moedas + $2 WHERE id = $3 RETURNING xp, nivel, moedas", [xp, moedas, id])
-        return res.rows[0];
+        const res = await query("UPDATE Usuario SET xp = xp + $1, moedas = moedas + $2 WHERE id = $3 RETURNING *", [xp, moedas, id])
+        return res.rows[0]
     }
 
-    async debitar_moedas(id, valor) {
-        const res = await query("UPDATE Usuario SET moedas = moedas - $1 WHERE id = $2 RETURNING moedas", [valor, id])
-        return res.rows[0].moedas
+    async atualizar_nivel(id, novoNivel) {
+        await query("UPDATE Usuario SET nivel = $1 WHERE id = $2", [novoNivel, id])
     }
 
     async get_saldo(id) {
@@ -63,8 +68,8 @@ class DB_User {
         return res.rows[0].moedas
     }
 
-    async atualizar_nivel(id, novo_nivel) {
-        await query("UPDATE Usuario SET nivel = $1 WHERE id = $2", [novo_nivel, id])
+    async debitar_moedas(id, valor) {
+        await query("UPDATE Usuario SET moedas = moedas - $1 WHERE id = $2", [valor, id])
     }
 }
 module.exports = { DB_User, }

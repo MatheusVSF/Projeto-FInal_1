@@ -112,7 +112,6 @@ class C_User {
             res.status(200).json(user)
         } catch (err) {
             res.status(500).json({ erro: err.message })
-            res.status(500).json({ erro: err.message })
         }
     }
 
