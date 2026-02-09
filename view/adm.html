@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Life - Administração</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .bg-admin {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar Admin -->
+    <nav class="navbar navbar-dark bg-admin mb-4">
+        <div class="container">
+            <span class="navbar-brand fw-bold">
+                <i class="bi bi-shield-lock-fill"></i> Painel Administrativo
+            </span>
+            <button id="btn_logout_adm" class="btn btn-outline-light btn-sm">
+                <i class="bi bi-box-arrow-right"></i> Sair
+            </button>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2 class="mb-4 text-center text-dark fw-bold">Gestão de Usuários</h2>
+
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID</th>
+                                <th>Nome</th>
+                                <th>Email</th>
+                                <th>Nível</th>
+                                <th class="text-end">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lista_usuarios">
+                            <!-- Usuários carregados via JS -->
+                            <tr>
+                                <td colspan="5" class="text-center text-muted py-4">Carregando usuários...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // --- ADMIN JS ---
+
+        async function carregarUsuarios() {
+            const tbody = document.getElementById("lista_usuarios");
+            try {
+                const resposta = await fetch("http://127.0.0.1:3000/user/listar", {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include'
+                });
+
+                if (resposta.ok) {
+                    const usuarios = await resposta.json();
+                    tbody.innerHTML = "";
+
+                    if (usuarios.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" class="text-center">Nenhum usuário encontrado.</td></tr>';
+                        return;
+                    }
+
+                    usuarios.forEach(user => {
+                        const tr = document.createElement("tr");
+                        tr.innerHTML = `
+                            <td><span class="badge bg-secondary">${user.id.substring(0, 8)}...</span></td>
+                            <td class="fw-bold">${user.nome}</td>
+                            <td>${user.email}</td>
+                            <td><span class="badge bg-success">Nvl ${user.nivel}</span></td>
+                            <td class="text-end">
+                                <button onclick="banirUsuario('${user.id}', '${user.nome}')" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-ban"></i> Banir
+                                </button>
+                            </td>
+                        `;
+                        tbody.appendChild(tr);
+                    });
+                } else {
+                    alert("Acesso negado ou sessão expirada.");
+                    window.location.href = "index.html";
+                }
+            } catch (erro) {
+                console.error("Erro ao listar usuários:", erro);
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">Erro de conexão.</td></tr>';
+            }
+        }
+
+        async function banirUsuario(id, nome) {
+            if (!confirm(`Tem certeza que deseja BANIR o usuário ${nome}? Essa ação não pode ser desfeita.`)) return;
+
+            try {
+                const resposta = await fetch("http://127.0.0.1:3000/user/deletar_adm", {
+                    method: 'POST', // Mudamos para POST pois é mais comum para actions, mas DELETE tbm serve se o back aceitar
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    body: JSON.stringify({ id: id })
+                });
+
+                if (resposta.ok) {
+                    alert("Usuário banido com sucesso!");
+                    carregarUsuarios(); // Atualiza a lista
+                } else {
+                    alert("Erro ao banir usuário.");
+                }
+            } catch (erro) {
+                console.error("Erro ao banir:", erro);
+            }
+        }
+
+        // Logout Admin
+        document.getElementById("btn_logout_adm").addEventListener("click", async () => {
+            await fetch("http://127.0.0.1:3000/user/logout", { method: 'POST', credentials: 'include' });
+            window.location.href = "index.html";
+        });
+
+        // Iniciar
+        carregarUsuarios();
+    </script>
+</body>
+
+</html>
